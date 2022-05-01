@@ -1,3 +1,7 @@
+[![License](http://img.shields.io/:license-apache%202.0-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.github.jcechace.edu/pb162-csv-parser?server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/#nexus-search;gav~io.github.jcechace.edu~pb162-csv-parser~~~)
+[![Javadoc](https://img.shields.io/badge/-javadoc-blue)](http://jcechace.github.io/pb162-csv-parser/apidocs/)
+
 PB162 Simple CSV Reader
 ====================================
 
