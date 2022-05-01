@@ -104,6 +104,9 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <notimestamp>true</notimestamp>
+                        </configuration>
                     </plugin>
                     <!-- Publish artifacts -->
                     <plugin>
