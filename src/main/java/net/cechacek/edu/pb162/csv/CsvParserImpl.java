@@ -1,11 +1,10 @@
-package io.github.jcechace.edu.pb162.csv;
+package net.cechacek.edu.pb162.csv;
 
-import io.github.jcechace.edu.pb162.csv.reader.HeadedCsvReader;
-import io.github.jcechace.edu.pb162.csv.reader.PlainCsvReader;
+import net.cechacek.edu.pb162.csv.reader.HeadedCsvReader;
+import net.cechacek.edu.pb162.csv.reader.PlainCsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,24 +18,27 @@ import java.util.Map;
 public class CsvParserImpl implements CsvParser {
 
 
-    private final String delimiter;
+    private final char delimiter;
+    private final char quoter;
     private final Charset charset;
 
     /**
      * Creates instance with {@link CsvParser#DEFAULT_DELIMITER}
      */
     public CsvParserImpl() {
-        this(DEFAULT_DELIMITER, DEFAULT_CHARSET);
+        this(DEFAULT_DELIMITER, DEFAULT_QUOTER, DEFAULT_CHARSET);
     }
 
     /**
      * Creates instance with given delimiter
      *
      * @param delimiter delimiter used to separate values
+     * @param quoter element quotation character
      * @param charset character encoding
      */
-    public CsvParserImpl(String delimiter, Charset charset) {
+    public CsvParserImpl(char delimiter,char quoter, Charset charset) {
         this.delimiter = delimiter;
+        this.quoter = quoter;
         this.charset = charset;
     }
 
@@ -46,8 +48,8 @@ public class CsvParserImpl implements CsvParser {
     }
 
     @Override
-    public PlainCsvReader open(InputStream is) throws UnsupportedEncodingException {
-        return new PlainCsvReader(is, delimiter, charset);
+    public PlainCsvReader open(InputStream is) {
+        return new PlainCsvReader(is, delimiter, quoter, charset);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class CsvParserImpl implements CsvParser {
 
     @Override
     public HeadedCsvReader openWithHeader(InputStream is) throws IOException {
-        return new HeadedCsvReader(is, delimiter, charset);
+        return new HeadedCsvReader(is, delimiter, quoter, charset);
     }
 
     @Override
@@ -79,8 +81,13 @@ public class CsvParserImpl implements CsvParser {
     }
 
     @Override
-    public String getDelimiter() {
+    public char getDelimiter() {
         return delimiter;
+    }
+
+    @Override
+    public char getQuoter() {
+        return quoter;
     }
 
     @Override

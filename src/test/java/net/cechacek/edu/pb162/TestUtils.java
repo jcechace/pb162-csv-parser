@@ -1,4 +1,4 @@
-package io.github.jcechace.edu.pb162;
+package net.cechacek.edu.pb162;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;

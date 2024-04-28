@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.jcechace.edu</groupId>
+    <groupId>net.cechacek.edu</groupId>
     <artifactId>pb162-csv-parser</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <name>Simple CSV Parser</name>
     <description>Simple CSV Parser used as example maven dependency in pb162 course at FI MU.</description>
     <url>https://github.com/jcechace/pb162-csv-parser</url>
@@ -26,19 +26,21 @@
     </licenses>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- dependency versions -->
         <version.plugin.surefire>2.22.2</version.plugin.surefire>
         <version.plugin.checkstyle>3.1.2</version.plugin.checkstyle>
-        <version.plugin.source>2.4</version.plugin.source>
-        <version.plugin.javadoc>3.4.0</version.plugin.javadoc>
+        <version.plugin.source>3.3.1</version.plugin.source>
+        <version.plugin.javadoc>3.6.3</version.plugin.javadoc>
+        <version.plugin.central-publishing>0.4.0</version.plugin.central-publishing>
+        <version.plugin.gpg>3.2.4</version.plugin.gpg>
         <version.junit.jupiter>5.8.2</version.junit.jupiter>
         <version.assertj>3.22.0</version.assertj>
         <version.jcommander>1.82</version.jcommander>
         <version.system-labda>1.2.1</version.system-labda>
-        <version.mockito>4.5.1</version.mockito>
+        <version.mockito>5.11.0</version.mockito>
     </properties>
 
     <distributionManagement>
@@ -78,12 +80,6 @@
             <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <version>${version.mockito}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -91,6 +87,21 @@
             <id>release</id>
             <build>
                 <plugins>
+                    <!-- Sign components -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${version.plugin.gpg}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!-- Include javadocs -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -110,14 +121,13 @@
                     </plugin>
                     <!-- Publish artifacts -->
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${version.plugin.central-publishing}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <tokenAuth>true</tokenAuth>
                         </configuration>
                     </plugin>
                 </plugins>

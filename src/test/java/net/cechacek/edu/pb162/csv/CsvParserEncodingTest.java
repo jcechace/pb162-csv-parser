@@ -1,5 +1,6 @@
-package io.github.jcechace.edu.pb162.csv;
+package net.cechacek.edu.pb162.csv;
 
+import net.cechacek.edu.pb162.TestUtils;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -12,8 +13,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.jcechace.edu.pb162.TestUtils.resourcePath;
-
 @ExtendWith(SoftAssertionsExtension.class)
 public class CsvParserEncodingTest {
 
@@ -24,13 +23,13 @@ public class CsvParserEncodingTest {
 
     @BeforeEach
     void setUp() {
-        parser = CsvToolkit.parser(",", Charset.forName("ISO-8859-2"));
+        parser = CsvToolkit.parser(',', '"', Charset.forName("ISO-8859-2"));
     }
 
     @Test
     @DisplayName("Loads plain CSV data with Latin 2 encoding")
     public void plainCsv() throws Exception {
-        List<List<String>> data = parser.readAll(resourcePath("/plain_iso-8859-2.csv"));
+        List<List<String>> data = parser.readAll(TestUtils.resourcePath("/plain_iso-8859-2.csv"));
         softly.assertThat(data).containsExactlyElementsOf(List.of(
                 List.of("příliš", "žluťoučký", "kůň"),
                 List.of("úpěl", "ďábelské", "ódy")
@@ -46,7 +45,7 @@ public class CsvParserEncodingTest {
         );
 
         List<List<String>> actual = new ArrayList<>();
-        try (var reader = parser.open((resourcePath("/plain_iso-8859-2.csv")))) {
+        try (var reader = parser.open((TestUtils.resourcePath("/plain_iso-8859-2.csv")))) {
             reader.forEach(actual::add);
             softly.assertThat(reader.read()).isNull();
         }

@@ -1,4 +1,4 @@
-package io.github.jcechace.edu.pb162.csv;
+package net.cechacek.edu.pb162.csv;
 
 import java.nio.charset.Charset;
 
@@ -17,17 +17,18 @@ public final class CsvToolkit {
      * @return parser
      */
     public static CsvParser parser() {
-        return parser(CsvParser.DEFAULT_DELIMITER, CsvParser.DEFAULT_CHARSET);
+        return parser(CsvParser.DEFAULT_DELIMITER, CsvParser.DEFAULT_QUOTER, CsvParser.DEFAULT_CHARSET);
     }
 
     /**
      * Creates instance of {@link CsvParser} with given delimiter
      *
      * @param delimiter value delimiter
+     * @param quoter value quotation character
      * @param charset character encoding
      * @return parser
      */
-    public static CsvParser parser(String delimiter, Charset charset) {
-        return new CsvParserImpl(delimiter, charset);
+    public static CsvParser parser(char delimiter,char quoter, Charset charset) {
+        return new CsvParserImpl(delimiter, quoter, charset);
     }
 }

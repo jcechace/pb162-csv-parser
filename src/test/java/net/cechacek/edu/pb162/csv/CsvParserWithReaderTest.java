@@ -1,5 +1,6 @@
-package io.github.jcechace.edu.pb162.csv;
+package net.cechacek.edu.pb162.csv;
 
+import net.cechacek.edu.pb162.TestUtils;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.jcechace.edu.pb162.TestUtils.resourcePath;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SoftAssertionsExtension.class)
@@ -29,7 +29,7 @@ public class CsvParserWithReaderTest {
 
     @BeforeEach
     void setUp() {
-        parser = CsvToolkit.parser(",", StandardCharsets.UTF_8);
+        parser = CsvToolkit.parser(',', '"', StandardCharsets.UTF_8);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class CsvParserWithReaderTest {
                 List.of("3", "Li", "Lithium", "solid", "alkali metal", "1817")
         );
 
-        try (var reader = parser.open(resourcePath("/plain.csv"))) {
+        try (var reader = parser.open(TestUtils.resourcePath("/plain.csv"))) {
             for (int i = 0; i < 3; i++) {
                 softly.assertThat(reader.read()).isEqualTo(expected.get(i));
             }
@@ -81,7 +81,7 @@ public class CsvParserWithReaderTest {
                 List.of("3", "Li", "Lithium", "solid", "alkali metal", "1817")
         );
 
-        var is = spy(Files.newInputStream(resourcePath("/plain.csv")));
+        var is = spy(Files.newInputStream(TestUtils.resourcePath("/plain.csv")));
         try (var reader = parser.open(is)) {
             for (int i = 0; i < 3; i++) {
                 softly.assertThat(reader.read()).isEqualTo(expected.get(i));
@@ -124,7 +124,7 @@ public class CsvParserWithReaderTest {
         );
 
         List<List<String>> actual = new ArrayList<>();
-        try (var reader = parser.open(resourcePath("/plain.csv"))) {
+        try (var reader = parser.open(TestUtils.resourcePath("/plain.csv"))) {
             reader.forEach(actual::add);
             softly.assertThat(reader.read()).isNull();
         }
@@ -142,7 +142,7 @@ public class CsvParserWithReaderTest {
                 List.of("4", "Be", "Beryllium", "solid", "alkaline earth metal", "1798")
         );
 
-        try (var reader = parser.open(resourcePath("/header.csv"))) {
+        try (var reader = parser.open(TestUtils.resourcePath("/header.csv"))) {
             for (int i = 0; i < 5; i++) {
                 softly.assertThat(reader.read()).isEqualTo(expected.get(i));
             }
@@ -189,7 +189,7 @@ public class CsvParserWithReaderTest {
                 )
         );
 
-        try (var reader = parser.openWithHeader(resourcePath("/header.csv"))) {
+        try (var reader = parser.openWithHeader(TestUtils.resourcePath("/header.csv"))) {
             for (int i = 0; i < 4; i++) {
                 softly.assertThat(reader.read()).isEqualTo(expected.get(i));
             }
@@ -237,7 +237,7 @@ public class CsvParserWithReaderTest {
         );
 
         List<Map<String, String>> actual = new ArrayList<>();
-        try (var reader = parser.openWithHeader(resourcePath("/header.csv"))) {
+        try (var reader = parser.openWithHeader(TestUtils.resourcePath("/header.csv"))) {
             reader.forEach(actual::add);
             softly.assertThat(reader.read()).isNull();
         }
@@ -362,7 +362,7 @@ public class CsvParserWithReaderTest {
     @Test
     @DisplayName("Errors with incorrect number of elements when loading CSV data with header via consumer")
     public void headedCsvErrorConsumer() throws Exception {
-        try (var reader = parser.openWithHeader(resourcePath("/header_broken.csv"))) {
+        try (var reader = parser.openWithHeader(TestUtils.resourcePath("/header_broken.csv"))) {
             softly.assertThatThrownBy(() -> reader.forEach(row -> {}))
                     .isInstanceOf(IOException.class)
                     .hasMessageContaining(Messages.INVALID_FORMAT);

@@ -1,8 +1,7 @@
-package io.github.jcechace.edu.pb162.csv.reader;
+package net.cechacek.edu.pb162.csv.reader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -16,11 +15,11 @@ public class PlainCsvReader extends AbstractCsvReader<List<String>> {
      *
      * @param is input stream of CSV data
      * @param delimiter delimiter
+     * @param quoter element quotation character
      * @param charset character encoding
-     * @throws  UnsupportedEncodingException on invalid character encoding
      */
-    public PlainCsvReader(InputStream is, String delimiter, Charset charset) throws UnsupportedEncodingException {
-        super(is, delimiter, charset);
+    public PlainCsvReader(InputStream is, char delimiter, char quoter, Charset charset) {
+        super(is, delimiter, quoter, charset);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package io.github.jcechace.edu.pb162.csv.reader;
+package net.cechacek.edu.pb162.csv.reader;
 
 import java.io.Closeable;
 import java.io.IOException;

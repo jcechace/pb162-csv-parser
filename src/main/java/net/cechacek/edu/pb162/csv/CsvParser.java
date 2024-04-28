@@ -1,6 +1,6 @@
-package io.github.jcechace.edu.pb162.csv;
+package net.cechacek.edu.pb162.csv;
 
-import io.github.jcechace.edu.pb162.csv.reader.CsvReader;
+import net.cechacek.edu.pb162.csv.reader.CsvReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,12 @@ public interface CsvParser {
     /**
      * Default delimiter is a comma
      */
-    String DEFAULT_DELIMITER = ",";
+    char DEFAULT_DELIMITER = ',';
+
+    /**
+     * Default quoter is a double quote
+     */
+    char DEFAULT_QUOTER = '"';
 
     /**
      * Default character encoding
@@ -83,7 +88,13 @@ public interface CsvParser {
      * Gets delimiter used by this parser
      * @return delimiter
      */
-    String getDelimiter();
+    char getDelimiter();
+
+    /**
+     * Gets quoter character used by this parser
+     * @return quoter
+     */
+    char getQuoter();
 
     /**
      * Gets charset used by this parser

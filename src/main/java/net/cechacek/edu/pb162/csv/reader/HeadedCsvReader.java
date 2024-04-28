@@ -1,6 +1,6 @@
-package io.github.jcechace.edu.pb162.csv.reader;
+package net.cechacek.edu.pb162.csv.reader;
 
-import io.github.jcechace.edu.pb162.csv.Messages;
+import net.cechacek.edu.pb162.csv.Messages;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,11 +23,12 @@ public class HeadedCsvReader extends AbstractCsvReader<Map<String, String>> {
      *
      * @param is input stream of CSV data
      * @param delimiter delimiter
+     * @param quoter element quotation character
      * @param charset character encoding
      * @throws IOException on any IO error
      */
-    public HeadedCsvReader(InputStream is, String delimiter, Charset charset) throws IOException {
-        super(is, delimiter, charset);
+    public HeadedCsvReader(InputStream is, char delimiter, char quoter, Charset charset) throws IOException {
+        super(is, delimiter, quoter, charset);
         readHead();
     }
 

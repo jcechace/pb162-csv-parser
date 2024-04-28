@@ -12,10 +12,11 @@ Simple CSV Reader does not perform any type conversions and all values are simpl
 In order to use CSV Reader in your project, add the following dependency to your project's ``pom.xml``
 
 ```xml
+
 <dependency>
-    <groupId>io.github.jcechace.edu</groupId>
+    <groupId>net.cechacek.edu</groupId>
     <artifactId>pb162-csv-parser</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 </dependency>
 ```
 

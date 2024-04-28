@@ -1,4 +1,4 @@
-package io.github.jcechace.edu.pb162.csv;
+package net.cechacek.edu.pb162.csv;
 
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.jcechace.edu.pb162.TestUtils.resourcePath;
+import static net.cechacek.edu.pb162.TestUtils.resourcePath;
 
 @ExtendWith(SoftAssertionsExtension.class)
 public class CsvParserTest {
@@ -26,7 +26,7 @@ public class CsvParserTest {
 
     @BeforeEach
     void setUp() {
-        parser = CsvToolkit.parser(",", StandardCharsets.UTF_8);
+        parser = CsvToolkit.parser(',', '"', StandardCharsets.UTF_8);
     }
 
     @Test
@@ -60,6 +60,25 @@ public class CsvParserTest {
                 List.of("2", "He", "Helium", "gas", "noble gas", "1868"),
                 List.of("3", "Li", "Lithium", "solid", "alkali metal", "1817"),
                 List.of("4", "Be", "Beryllium", "solid", "alkaline earth metal", "1798")
+        ));
+    }
+
+
+    @Test
+    @DisplayName("Loads CSV data with header and quoted values")
+    public void headedCsvWithQuotes() throws Exception {
+        List<Map<String, String>> data = parser.readAllWithHeader(resourcePath("/header_quoted.csv"));
+        softly.assertThat(data).containsExactlyElementsOf(List.of(
+                Map.of(
+                        "id", "1",
+                        "name", "Goku",
+                        "ability", "Super strength, Ultra instinct"
+                ),
+                Map.of(
+                        "id", "2",
+                        "name", "Vegeta",
+                        "ability", "Super strength, Ultra ego"
+                )
         ));
     }
 
