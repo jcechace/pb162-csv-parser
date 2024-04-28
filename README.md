@@ -16,7 +16,7 @@ In order to use CSV Reader in your project, add the following dependency to your
 <dependency>
     <groupId>net.cechacek.edu</groupId>
     <artifactId>pb162-csv-parser</artifactId>
-    <version>0.2.0-final</version>
+    <version>0.3.0-final</version>
 </dependency>
 ```
 
