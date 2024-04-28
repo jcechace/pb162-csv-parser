@@ -1,6 +1,7 @@
 package net.cechacek.edu.pb162.csv;
 
 import net.cechacek.edu.pb162.csv.reader.CsvReader;
+import net.cechacek.edu.pb162.csv.reader.ValueConvertor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,6 +77,17 @@ public interface CsvParser {
     List<List<String>> readAll(Path path) throws IOException;
 
     /**
+     * Reads all CSV data from given path as domain object
+     *
+     * @param path file path
+     * @param convertor domain convertor
+     * @return read CSV data
+     * @throws IOException on any IO error
+     * @param <D> domain type
+     */
+    <D> List<D> readAll(Path path, ValueConvertor<List<String>, D> convertor) throws IOException;
+
+    /**
      * Reads all CSV data <strong>with header</strong> from given path
      *
      * @param path file path
@@ -83,6 +95,17 @@ public interface CsvParser {
      * @throws IOException on any IO error
      */
     List<Map<String, String>> readAllWithHeader(Path path) throws IOException;
+
+    /**
+     * Reads all CSV data <strong>with header</strong> from given path as domain objects
+     *
+     * @param path file path
+     * @param convertor domain convertor
+     * @return read CSV data  <strong>with header</strong>
+     * @throws IOException on any IO error
+     * @param <D> domain type
+     */
+    <D> List<D> readAllWithHeader(Path path, ValueConvertor<Map<String, String>, D> convertor) throws IOException;
 
     /**
      * Gets delimiter used by this parser

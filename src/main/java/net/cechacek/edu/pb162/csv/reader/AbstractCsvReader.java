@@ -58,6 +58,11 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
     }
 
     @Override
+    public <D> void forEach(ValueConvertor<T, D> convertor, Consumer<D> consumer) throws IOException {
+        forEach((T value) -> consumer.accept(convertor.convert(value)));
+    }
+
+    @Override
     public void close() throws IOException {
         reader.close();
     }
@@ -74,6 +79,12 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
     protected List<String> readLine() throws IOException {
         String line = reader.readLine();
         return (line == null) ? null : parseLine(line);
+    }
+
+    @Override
+    public <D> D read(ValueConvertor<T, D> convertor) throws IOException {
+        T value = read();
+        return convertor.convert(value);
     }
 
     /**

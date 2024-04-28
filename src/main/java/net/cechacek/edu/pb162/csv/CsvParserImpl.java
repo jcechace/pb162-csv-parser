@@ -2,6 +2,7 @@ package net.cechacek.edu.pb162.csv;
 
 import net.cechacek.edu.pb162.csv.reader.HeadedCsvReader;
 import net.cechacek.edu.pb162.csv.reader.PlainCsvReader;
+import net.cechacek.edu.pb162.csv.reader.ValueConvertor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,18 +65,29 @@ public class CsvParserImpl implements CsvParser {
 
     @Override
     public List<List<String>> readAll(Path path) throws IOException {
-        List<List<String>> data = new ArrayList<>();
+        return readAll(path, (List<String> value) -> value);
+    }
+
+    @Override
+    public <D> List<D> readAll(Path path, ValueConvertor<List<String>, D> convertor) throws IOException {
+        List<D> data = new ArrayList<>();
         try(PlainCsvReader reader = open(path)) {
-            reader.forEach(data::add);
+            reader.forEach(convertor, data::add);
         }
         return data;
     }
 
     @Override
     public List<Map<String, String>> readAllWithHeader(Path path) throws IOException {
-        List<Map<String, String>> data = new ArrayList<>();
+        return readAllWithHeader(path, (Map<String, String> value) -> value);
+    }
+
+    @Override
+    public <D> List<D> readAllWithHeader(Path path, ValueConvertor<Map<String, String>, D> convertor)
+            throws IOException {
+        List<D> data = new ArrayList<>();
         try(HeadedCsvReader reader = openWithHeader(path)) {
-            reader.forEach(data::add);
+            reader.forEach(convertor, data::add);
         }
         return data;
     }
