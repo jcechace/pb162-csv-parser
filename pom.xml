@@ -18,6 +18,14 @@
         <url>https://github.com/jcechace/pb162-csv-parser</url>
     </scm>
 
+    <developers>
+        <developer>
+            <id>jcechace</id>
+            <name>Jakub Cechacek</name>
+            <email>jakub@cechacek.net</email>
+        </developer>
+    </developers>
+    
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
