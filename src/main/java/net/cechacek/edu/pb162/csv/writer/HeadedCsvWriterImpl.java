@@ -32,7 +32,8 @@ public class HeadedCsvWriterImpl
      * @param header      header
      * @param writeHeader true if header is expected to be written
      */
-    public HeadedCsvWriterImpl(OutputStream os, char delimiter, char quoter, Charset charset, List<String> header, boolean writeHeader) {
+    public HeadedCsvWriterImpl(OutputStream os, char delimiter, char quoter,
+                               Charset charset, List<String> header, boolean writeHeader) {
         super(os, delimiter, quoter, charset);
         this.header = new ArrayList<>(header);
         this.expectHeaderWrite = writeHeader;

@@ -105,7 +105,7 @@ public final class DefaultToolkit implements CsvToolkit {
     }
 
     @Override
-    public HeadedCsvWriter writeWithHeader(OutputStream os, List<String> header, boolean writeHeader) throws IOException {
+    public HeadedCsvWriter writeWithHeader(OutputStream os, List<String> header, boolean writeHeader) {
         return new HeadedCsvWriterImpl(os, delimiter, quoter, charset, header, writeHeader);
     }
 
