@@ -1,5 +1,7 @@
 package net.cechacek.edu.pb162.csv.reader;
 
+import net.cechacek.edu.pb162.csv.ValueConvertor;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +61,7 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
 
     @Override
     public <D> void forEach(ValueConvertor<T, D> convertor, Consumer<D> consumer) throws IOException {
-        forEach((T value) -> consumer.accept(convertor.convert(value)));
+        forEach((T value) -> consumer.accept(convertor.toDomain(value)));
     }
 
     @Override
@@ -84,7 +86,7 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
     @Override
     public <D> D read(ValueConvertor<T, D> convertor) throws IOException {
         T value = read();
-        return convertor.convert(value);
+        return convertor.toDomain(value);
     }
 
     /**
@@ -142,7 +144,7 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
         private String token(String input, int from, int to) {
             var token = input.substring(from, to).strip();
 
-            if (token.charAt(0) == quoter) {
+            if (!token.isEmpty() &&  token.charAt(0) == quoter) {
                 token = token.substring(1, token.length() - 1);
             }
             return token;

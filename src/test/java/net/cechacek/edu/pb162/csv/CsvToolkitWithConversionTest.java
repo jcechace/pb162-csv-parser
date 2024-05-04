@@ -1,7 +1,6 @@
 package net.cechacek.edu.pb162.csv;
 
 import net.cechacek.edu.pb162.TestUtils;
-import net.cechacek.edu.pb162.csv.reader.ValueConvertor;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -9,42 +8,54 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.description;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SoftAssertionsExtension.class)
-public class CsvParserWithConversionTest {
+public class CsvToolkitWithConversionTest {
 
-    record Element(int id, String symbol, String name){};
+    record Element(Integer id, String symbol, String name){};
 
     static class ElementConverter implements ValueConvertor<List<String>, Element> {
         @Override
-        public Element convert(List<String> value) {
+        public Element toDomain(List<String> data) {
             return new Element(
-                    Integer.parseInt(value.get(0)),
-                    value.get(1),
-                    value.get(2)
+                    Integer.valueOf(data.get(0)),
+                    data.get(1),
+                    data.get(2)
             );
+        }
+
+        @Override
+        public List<String> toData(Element domain) {
+            return List.of(domain.id.toString(), domain.symbol, domain.name);
         }
     }
 
     static class ElementHeadedConvertor implements ValueConvertor<Map<String, String>, Element> {
         @Override
-        public Element convert(Map<String, String> value) {
+        public Element toDomain(Map<String, String> data) {
             return new Element(
-                    Integer.parseInt(value.get("atomicNumber")),
-                    value.get("symbol"),
-                    value.get("name")
+                    Integer.parseInt(data.get("atomicNumber")),
+                    data.get("symbol"),
+                    data.get("name")
+            );
+        }
+
+        @Override
+        public Map<String, String> toData(Element domain) {
+            return Map.of(
+                    "atomicNumber", domain.id.toString(),
+                    "symbol", domain.symbol,
+                    "name", domain.name
             );
         }
     }
@@ -52,14 +63,40 @@ public class CsvParserWithConversionTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
 
-    private CsvParser parser;
+    private CsvToolkit csv;
 
 
     @BeforeEach
     void setUp() {
-        parser = CsvToolkit.parser(',', '"', StandardCharsets.UTF_8);
+        csv = DefaultToolkit.create(',', '"', StandardCharsets.UTF_8);
     }
 
+
+    @Test
+    @DisplayName("Creates, writes and reads plain CSV data")
+    public void createAndWritePlainCsv(@TempDir Path path) throws Exception {
+        var file = path.resolve("test.csv");
+        var converter = new ElementConverter();
+
+        var expected = List.of(
+                new Element(1, "H", "Hydrogen"),
+                new Element(2, "He", "Helium"),
+                new Element(3, "Li", "Lithium")
+        );
+
+        try (var writer = csv.write(file)) {
+            for (int i = 0; i < 3; i++) {
+                writer.write(converter, expected.get(i));
+            }
+        }
+
+        try (var reader = csv.read(file)) {
+            for (int i = 0; i < 3; i++) {
+                softly.assertThat(reader.read(converter)).isEqualTo(expected.get(i));
+            }
+            softly.assertThat(reader.read()).isNull();
+        }
+    }
 
     @Test
     @DisplayName("Loads plain CSV data")
@@ -70,7 +107,7 @@ public class CsvParserWithConversionTest {
                 new Element(3, "Li", "Lithium")
         );
 
-        try (var reader = parser.open(TestUtils.resourcePath("/plain.csv"))) {
+        try (var reader = csv.read(TestUtils.resourcePath("/plain.csv"))) {
             for (int i = 0; i < 3; i++) {
                 softly.assertThat(reader.read(new ElementConverter())).isEqualTo(expected.get(i));
             }
@@ -89,7 +126,7 @@ public class CsvParserWithConversionTest {
         );
 
         List<Element> actual = new ArrayList<>();
-        try (var reader = parser.open(TestUtils.resourcePath("/plain.csv"))) {
+        try (var reader = csv.read(TestUtils.resourcePath("/plain.csv"))) {
             reader.forEach(new ElementConverter(), actual::add);
             softly.assertThat(reader.read()).isNull();
         }
@@ -106,7 +143,7 @@ public class CsvParserWithConversionTest {
                 new Element(4, "Be", "Beryllium")
         );
 
-        try (var reader = parser.openWithHeader(TestUtils.resourcePath("/header.csv"))) {
+        try (var reader = csv.readWithHeader(TestUtils.resourcePath("/header.csv"))) {
             for (int i = 0; i < 4; i++) {
                 softly.assertThat(reader.read(new ElementHeadedConvertor())).isEqualTo(expected.get(i));
             }
@@ -125,7 +162,7 @@ public class CsvParserWithConversionTest {
         );
 
         var actual = new ArrayList<Element>();
-        try (var reader = parser.openWithHeader(TestUtils.resourcePath("/header.csv"))) {
+        try (var reader = csv.readWithHeader(TestUtils.resourcePath("/header.csv"))) {
             reader.forEach(new ElementHeadedConvertor(), actual::add);
             softly.assertThat(reader.read()).isNull();
         }

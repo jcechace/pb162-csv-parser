@@ -1,5 +1,7 @@
 package net.cechacek.edu.pb162.csv.reader;
 
+import net.cechacek.edu.pb162.csv.ValueConvertor;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.function.Consumer;
