@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"net.cechacek.edu.pb162.csv"},{"l":"net.cechacek.edu.pb162.csv.reader"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"net.cechacek.edu.pb162.csv"},{"l":"net.cechacek.edu.pb162.csv.reader"},{"l":"net.cechacek.edu.pb162.csv.writer"}];updateSearchResults();
