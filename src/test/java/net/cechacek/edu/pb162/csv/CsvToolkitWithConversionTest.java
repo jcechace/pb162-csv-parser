@@ -24,7 +24,7 @@ public class CsvToolkitWithConversionTest {
 
     record Element(Integer id, String symbol, String name){};
 
-    static class ElementConverter implements ValueConvertor<List<String>, Element> {
+    static class ElementConverter implements PlainValueConvertor<Element> {
         @Override
         public Element toDomain(List<String> data) {
             return new Element(
@@ -40,7 +40,7 @@ public class CsvToolkitWithConversionTest {
         }
     }
 
-    static class ElementHeadedConvertor implements ValueConvertor<Map<String, String>, Element> {
+    static class ElementHeadedConvertor implements HeadedValueConvertor<Element> {
         @Override
         public Element toDomain(Map<String, String> data) {
             return new Element(
