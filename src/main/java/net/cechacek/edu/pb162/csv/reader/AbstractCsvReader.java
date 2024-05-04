@@ -29,7 +29,14 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
      */
     protected final char quoter;
 
-    private final LineParser parser;
+    /**
+     * Line parser
+     */
+    protected final LineParser parser;
+
+    /**
+     * File reader
+     */
     protected final BufferedReader reader;
 
 
@@ -78,6 +85,11 @@ public abstract class AbstractCsvReader<T> implements CsvReader<T> {
         return parser.parse(line);
     }
 
+    /**
+     * Reads a single line
+     * @return read CSV line data
+     * @throws IOException on any io error
+     */
     protected List<String> readLine() throws IOException {
         String line = reader.readLine();
         return (line == null) ? null : parseLine(line);

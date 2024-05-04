@@ -28,6 +28,7 @@ public interface CsvReader<T> extends Closeable {
      * @param convertor domain convertor
      * @return converted line of CSV
      * @param <D> domain type
+     * @throws IOException on any IO error
      */
     <D> D read(ValueConvertor<T, D> convertor) throws IOException;
 
@@ -45,6 +46,7 @@ public interface CsvReader<T> extends Closeable {
      * @param convertor domain convertor
      * @param consumer consumer called with each converted line of CSV
      * @param <D> domain type
+     * @throws IOException on any io error
      */
     <D> void forEach(ValueConvertor<T, D> convertor, Consumer<D> consumer) throws IOException;
 

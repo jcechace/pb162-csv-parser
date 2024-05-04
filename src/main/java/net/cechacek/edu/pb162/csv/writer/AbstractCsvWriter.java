@@ -29,6 +29,10 @@ public abstract class AbstractCsvWriter<T> implements CsvWriter<T> {
      * Value quoter character
      */
     protected final char quoter;
+
+    /**
+     * File writer
+     */
     protected final BufferedWriter writer;
 
 
@@ -82,6 +86,11 @@ public abstract class AbstractCsvWriter<T> implements CsvWriter<T> {
         writer.close();
     }
 
+    /**
+     * Writes a single line of CSV
+     * @param line line to write
+     * @throws IOException on any io error
+     */
     protected void writeLine(String line) throws IOException {
         writer.write(line);
         writer.newLine();
@@ -104,12 +113,23 @@ public abstract class AbstractCsvWriter<T> implements CsvWriter<T> {
         return quoter + item + quoter;
     }
 
+    /**
+     * Converts CSV data into single {@link String}
+     * @param data CSV data
+     * @return CSV data as String
+     */
     protected String asLine(List<String> data) {
         return data.stream()
                 .map(this::quoteIfNeeded)
                 .collect(Collectors.joining(String.valueOf(delimiter)));
     }
 
+
+    /**
+     * Converts CSV data into single {@link String}
+     * @param data CSV data
+     * @return CSV data as String
+     */
     protected abstract String asLine(T data);
 
 }

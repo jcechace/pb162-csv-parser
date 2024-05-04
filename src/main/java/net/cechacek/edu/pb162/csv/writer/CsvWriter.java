@@ -26,6 +26,7 @@ public interface CsvWriter<T> extends Closeable {
      * @param convertor domain convertor
      * @param value domain object
      * @param <D> domain type
+     * @throws IOException on any io error
      */
     <D> void write(ValueConvertor<T, D> convertor, D value) throws IOException;
 
@@ -43,6 +44,7 @@ public interface CsvWriter<T> extends Closeable {
      * @param convertor domain convertor
      * @param items domain objects to write
      * @param <D> domain type
+     * @throws IOException on any io error
      */
     <D> void writeEach(ValueConvertor<T, D> convertor, Iterable<D> items) throws IOException;
 
