@@ -16,7 +16,7 @@ In order to use CSV Toolkit in your project, add the following dependency to you
 <dependency>
     <groupId>net.cechacek.edu</groupId>
     <artifactId>pb162-csv-parser</artifactId>
-    <version>0.4.0-final</version>
+    <version>0.5.0-final</version>
 </dependency>
 ```
 
