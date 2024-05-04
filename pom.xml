@@ -6,7 +6,7 @@
 
     <groupId>net.cechacek.edu</groupId>
     <artifactId>pb162-csv-parser</artifactId>
-    <version>0.4.0-final</version>
+    <version>0.5.0-SNAPSHOT</version>
     <name>Simple CSV Parser</name>
     <description>Simple CSV Parser used as example maven dependency in pb162 course at FI MU.</description>
     <url>https://github.com/jcechace/pb162-csv-parser</url>
